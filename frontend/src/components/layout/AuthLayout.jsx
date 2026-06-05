@@ -9,15 +9,14 @@ function AuthLayout() {
             Daily <span>Hangul</span>
           </Link>
           <p>
-            This auth area is now wired into the router and ready for the real
-            register, login, and session flows.
+            Register, sign in, and session recovery now share one dedicated auth shell.
           </p>
         </div>
 
         <ul className="auth-notes">
-          <li>Route shell is live for `/login` and `/register`.</li>
-          <li>Protected routes already redirect unauthenticated users here.</li>
-          <li>Backend auth endpoints can be connected in the next implementation step.</li>
+          <li>Protected routes redirect unauthenticated users here.</li>
+          <li>Session state is persisted in local storage and revalidated on reload.</li>
+          <li>Auth API calls go through the shared axios client.</li>
         </ul>
       </aside>
 

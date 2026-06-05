@@ -1,63 +1,124 @@
-import { useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 import { AuthContext } from './authContext.js'
-
-const AUTH_STORAGE_KEY = 'daily-hangul-auth'
+import authService from '../services/authService.js'
+import {
+  clearStoredSession,
+  loadStoredSession,
+  saveStoredSession,
+} from '../utils/authStorage.js'
 
 const defaultAuthState = {
   user: null,
   token: null,
-  isHydrated: true,
+  isHydrated: false,
 }
 
 function getInitialAuthState() {
-  if (typeof window === 'undefined') {
-    return defaultAuthState
-  }
+  const storedSession = loadStoredSession()
 
-  try {
-    const storedSession = window.localStorage.getItem(AUTH_STORAGE_KEY)
-
-    if (storedSession) {
-      const parsedSession = JSON.parse(storedSession)
-
-      return {
-        user: parsedSession.user ?? null,
-        token: parsedSession.token ?? null,
-        isHydrated: true,
-      }
+  if (!storedSession?.token) {
+    return {
+      ...defaultAuthState,
+      isHydrated: true,
     }
-  } catch (error) {
-    void error
   }
 
-  return defaultAuthState
+  return {
+    user: storedSession.user,
+    token: storedSession.token,
+    isHydrated: false,
+  }
 }
 
 export function AuthProvider({ children }) {
   const [authState, setAuthState] = useState(getInitialAuthState)
 
-  const login = ({ user, token }) => {
+  useEffect(() => {
+    if (!authState.token || authState.isHydrated) {
+      return undefined
+    }
+
+    let isActive = true
+
+    async function hydrateSession() {
+      try {
+        const user = await authService.getCurrentUser()
+
+        if (!isActive) {
+          return
+        }
+
+        const nextSession = {
+          user,
+          token: authState.token,
+        }
+
+        saveStoredSession(nextSession)
+        startTransition(() => {
+          setAuthState({
+            ...nextSession,
+            isHydrated: true,
+          })
+        })
+      } catch (error) {
+        if (!isActive) {
+          return
+        }
+
+        const statusCode = error?.response?.status
+
+        if (statusCode === 401 || statusCode === 404) {
+          clearStoredSession()
+          startTransition(() => {
+            setAuthState({
+              ...defaultAuthState,
+              isHydrated: true,
+            })
+          })
+          return
+        }
+
+        startTransition(() => {
+          setAuthState((currentState) => ({
+            ...currentState,
+            isHydrated: true,
+          }))
+        })
+      }
+    }
+
+    hydrateSession()
+
+    return () => {
+      isActive = false
+    }
+  }, [authState.isHydrated, authState.token])
+
+  const setSession = ({ user, token }) => {
     const nextState = {
       user: user ?? null,
       token: token ?? null,
     }
 
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextState))
-    }
+    saveStoredSession(nextState)
 
-    setAuthState({
-      ...nextState,
-      isHydrated: true,
+    startTransition(() => {
+      setAuthState({
+        ...nextState,
+        isHydrated: true,
+      })
     })
   }
 
   const logout = () => {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem(AUTH_STORAGE_KEY)
-    }
+    clearStoredSession()
 
-    setAuthState(defaultAuthState)
+    startTransition(() => {
+      setAuthState({
+        ...defaultAuthState,
+        isHydrated: true,
+      })
+    })
   }
 
   return (
@@ -67,8 +128,9 @@ export function AuthProvider({ children }) {
         token: authState.token,
         isAuthenticated: Boolean(authState.token),
         isHydrated: authState.isHydrated,
-        login,
+        login: setSession,
         logout,
+        setSession,
       }}
     >
       {children}

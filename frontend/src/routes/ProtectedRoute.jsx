@@ -9,8 +9,8 @@ function ProtectedRoute() {
     return (
       <section className="status-panel">
         <span className="eyebrow">Session</span>
-        <h2>Checking local auth state</h2>
-        <p>The protected route shell is waiting for the auth context to load.</p>
+        <h2>Verifying saved session</h2>
+        <p>The protected route shell is waiting for the auth context to finish hydrating.</p>
       </section>
     )
   }
