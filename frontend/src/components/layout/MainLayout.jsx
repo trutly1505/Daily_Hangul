@@ -1,7 +1,12 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.js'
 
 const publicNavigation = [{ label: 'Overview', to: '/' }]
+const landingNavigation = [
+  { label: 'How it works', href: '#learning-loop' },
+  { label: 'Topics', href: '#topic-library' },
+  { label: 'Review', href: '#review-cycle' },
+]
 
 const privateNavigation = [
   { label: 'Dashboard', to: '/dashboard' },
@@ -9,10 +14,12 @@ const privateNavigation = [
 ]
 
 function MainLayout() {
+  const location = useLocation()
   const { isAuthenticated, logout, user } = useAuth()
   const navigation = isAuthenticated
     ? [...publicNavigation, ...privateNavigation]
     : publicNavigation
+  const showLandingAnchors = !isAuthenticated && location.pathname === '/'
 
   return (
     <div className="app-shell">
@@ -23,17 +30,23 @@ function MainLayout() {
           </Link>
 
           <nav className="main-nav" aria-label="Primary navigation">
-            {navigation.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  isActive ? 'nav-link active' : 'nav-link'
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
+            {showLandingAnchors
+              ? landingNavigation.map((item) => (
+                  <a key={item.href} href={item.href} className="nav-link">
+                    {item.label}
+                  </a>
+                ))
+              : navigation.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      isActive ? 'nav-link active' : 'nav-link'
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
           </nav>
 
           <div className="header-actions">
