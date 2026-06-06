@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { ArrowRight, LockKeyhole, Mail, Sparkles, UserRound } from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
 import { useAuth } from '../hooks/useAuth.js'
 import authService from '../services/authService.js'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage.js'
@@ -23,13 +23,11 @@ function RegisterPage() {
 
   if (!isHydrated) {
     return (
-      <PagePlaceholder
-        framed={false}
-        eyebrow="Authentication"
-        title="Checking saved session"
-        description="The auth shell is restoring local session state before rendering the form."
-        meta="Route: /register"
-      />
+      <section className="auth-form-view auth-form-view--loading">
+        <span className="eyebrow">Authentication</span>
+        <h2>Đang kiểm tra phiên đã lưu</h2>
+        <p>Auth shell đang khôi phục trạng thái local trước khi render form.</p>
+      </section>
     )
   }
 
@@ -86,73 +84,104 @@ function RegisterPage() {
   }
 
   return (
-    <PagePlaceholder
-      framed={false}
-      eyebrow="Authentication"
-      title="Create your study account"
-      description="Register a new learner profile and enter the protected study flow immediately."
-      meta="Route: /register"
-    >
+    <section className="auth-form-view">
+      <div className="auth-form-head">
+        <span className="eyebrow">Authentication</span>
+        <h2>Tạo tài khoản và bắt đầu phiên học đầu tiên.</h2>
+        <p>
+          Đăng ký một lần, sau đó đi thẳng vào dashboard với danh sách chủ đề,
+          flashcard và quiz flow đã sẵn sàng để dùng.
+        </p>
+      </div>
+
+      <div className="auth-badge-row">
+        <span className="auth-badge">
+          <Sparkles size={16} />
+          Thiết lập người học mới
+        </span>
+        <span className="auth-badge">Route /register</span>
+      </div>
+
       <form className="form-shell" onSubmit={handleSubmit}>
         <div className="field-group">
-          <label htmlFor="register-name">Full name</label>
-          <input
-            id="register-name"
-            name="name"
-            type="text"
-            value={values.name}
-            placeholder="Nguyen Van A"
-            autoComplete="name"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.name)}
-          />
+          <label htmlFor="register-name">Họ và tên</label>
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <UserRound size={18} />
+            </span>
+            <input
+              id="register-name"
+              name="name"
+              type="text"
+              value={values.name}
+              placeholder="Nguyễn Văn A"
+              autoComplete="name"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.name)}
+            />
+          </div>
           {fieldErrors.name ? <p className="field-error">{fieldErrors.name}</p> : null}
         </div>
 
         <div className="field-group">
           <label htmlFor="register-email">Email</label>
-          <input
-            id="register-email"
-            name="email"
-            type="email"
-            value={values.email}
-            placeholder="name@example.com"
-            autoComplete="email"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.email)}
-          />
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <Mail size={18} />
+            </span>
+            <input
+              id="register-email"
+              name="email"
+              type="email"
+              value={values.email}
+              placeholder="name@example.com"
+              autoComplete="email"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.email)}
+            />
+          </div>
           {fieldErrors.email ? <p className="field-error">{fieldErrors.email}</p> : null}
         </div>
 
         <div className="field-group">
-          <label htmlFor="register-password">Password</label>
-          <input
-            id="register-password"
-            name="password"
-            type="password"
-            value={values.password}
-            placeholder="At least 6 characters"
-            autoComplete="new-password"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.password)}
-          />
+          <label htmlFor="register-password">Mật khẩu</label>
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <LockKeyhole size={18} />
+            </span>
+            <input
+              id="register-password"
+              name="password"
+              type="password"
+              value={values.password}
+              placeholder="Tối thiểu 6 ký tự"
+              autoComplete="new-password"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.password)}
+            />
+          </div>
           {fieldErrors.password ? (
             <p className="field-error">{fieldErrors.password}</p>
           ) : null}
         </div>
 
         <div className="field-group">
-          <label htmlFor="register-confirm-password">Confirm password</label>
-          <input
-            id="register-confirm-password"
-            name="confirmPassword"
-            type="password"
-            value={values.confirmPassword}
-            placeholder="Repeat the password"
-            autoComplete="new-password"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.confirmPassword)}
-          />
+          <label htmlFor="register-confirm-password">Nhập lại mật khẩu</label>
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <LockKeyhole size={18} />
+            </span>
+            <input
+              id="register-confirm-password"
+              name="confirmPassword"
+              type="password"
+              value={values.confirmPassword}
+              placeholder="Nhập lại mật khẩu"
+              autoComplete="new-password"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.confirmPassword)}
+            />
+          </div>
           {fieldErrors.confirmPassword ? (
             <p className="field-error">{fieldErrors.confirmPassword}</p>
           ) : null}
@@ -162,19 +191,27 @@ function RegisterPage() {
 
         <button
           type="submit"
-          className="button button-primary"
+          className="button button-primary auth-submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Creating account...' : 'Create account'}
+          {isSubmitting ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
+          <ArrowRight size={18} />
         </button>
       </form>
 
-      <div className="placeholder-actions">
-        <Link className="button button-secondary" to="/login">
-          Already have an account?
-        </Link>
+      <div className="auth-form-note">
+        <strong>Trước khi tiếp tục</strong>
+        <p>
+          Mật khẩu cần tối thiểu 6 ký tự. Sau khi đăng ký, app sẽ đăng nhập
+          ngay và đưa anh vào protected flow.
+        </p>
       </div>
-    </PagePlaceholder>
+
+      <div className="auth-switch">
+        <span>Đã có tài khoản?</span>
+        <Link to="/login">Đăng nhập thay vì đăng ký</Link>
+      </div>
+    </section>
   )
 }
 

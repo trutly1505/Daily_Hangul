@@ -9,12 +9,20 @@ const authRoutes = require('./routes/authRoutes')
 const healthRoutes = require('./routes/healthRoutes')
 
 const app = express()
+const allowedOrigins = new Set(env.clientUrls)
 
 app.disable('x-powered-by')
 
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true)
+        return
+      }
+
+      callback(new Error(`Origin ${origin} not allowed by CORS`))
+    },
     credentials: true,
   }),
 )
