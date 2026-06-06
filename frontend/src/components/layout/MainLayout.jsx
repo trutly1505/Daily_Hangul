@@ -10,15 +10,13 @@ const landingNavigation = [
 
 const privateNavigation = [
   { label: 'Dashboard', to: '/dashboard' },
-  { label: 'History', to: '/history' },
+  { label: 'Lịch sử', to: '/history' },
 ]
 
 function MainLayout() {
   const location = useLocation()
   const { isAuthenticated, logout, user } = useAuth()
-  const navigation = isAuthenticated
-    ? [...publicNavigation, ...privateNavigation]
-    : publicNavigation
+  const navigation = isAuthenticated ? privateNavigation : publicNavigation
   const showLandingAnchors = !isAuthenticated && location.pathname === '/'
 
   return (
@@ -54,23 +52,22 @@ function MainLayout() {
               <>
                 <div className="user-chip">
                   {user?.name || 'Learner'}
-                  {user?.email ? ` - ${user.email}` : ''}
                 </div>
                 <button
                   type="button"
                   className="button button-danger"
                   onClick={logout}
                 >
-                  Log out
+                  Đăng xuất
                 </button>
               </>
             ) : (
               <>
                 <Link className="button button-secondary" to="/login">
-                  Sign in
+                  Đăng nhập
                 </Link>
                 <Link className="button button-primary" to="/register">
-                  Create account
+                  Tạo tài khoản
                 </Link>
               </>
             )}
