@@ -21,11 +21,15 @@ function AuthLayout() {
             Daily <span>Hangul</span>
           </Link>
           <span className="eyebrow">Study Access</span>
-          <h1>Tiếp tục phiên học Daily Hangul.</h1>
-          <p>
-            Đăng nhập hoặc tạo tài khoản để lưu tiến độ, flashcard và kết quả
-            quiz trong cùng một flow học.
-          </p>
+        </div>
+
+        <div className="auth-shell__media" aria-hidden="true">
+          <dotlottie-wc
+            class="auth-lottie"
+            src="https://lottie.host/9711c88a-634e-44ce-bec0-8bf975c1c35e/nuFSZ4Ukql.lottie"
+            autoplay
+            loop
+          />
         </div>
 
         <div className="auth-shell__highlights">
