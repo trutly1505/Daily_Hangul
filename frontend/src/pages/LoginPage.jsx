@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { ArrowRight, LockKeyhole, Mail, ShieldCheck } from 'lucide-react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
 import { useAuth } from '../hooks/useAuth.js'
 import authService from '../services/authService.js'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage.js'
@@ -24,13 +24,11 @@ function LoginPage() {
 
   if (!isHydrated) {
     return (
-      <PagePlaceholder
-        framed={false}
-        eyebrow="Authentication"
-        title="Checking saved session"
-        description="The auth shell is restoring local session state before rendering the form."
-        meta="Route: /login"
-      />
+      <section className="auth-form-view auth-form-view--loading">
+        <span className="eyebrow">Authentication</span>
+        <h2>Đang kiểm tra phiên đã lưu</h2>
+        <p>Auth shell đang khôi phục trạng thái local trước khi render form.</p>
+      </section>
     )
   }
 
@@ -82,43 +80,64 @@ function LoginPage() {
   }
 
   return (
-    <PagePlaceholder
-      framed={false}
-      eyebrow="Authentication"
-      title="Sign in to continue learning"
-      description="Use an existing account to enter the protected study routes."
-      meta="Route: /login"
-    >
+    <section className="auth-form-view">
+      <div className="auth-form-head">
+        <span className="eyebrow">Authentication</span>
+        <h2>Đăng nhập và tiếp tục bài học đang dở.</h2>
+        <p>
+          Dùng tài khoản hiện có để quay lại flow học được bảo vệ, hàng đợi ôn
+          lại và kết quả quiz gần nhất.
+        </p>
+      </div>
+
+      <div className="auth-badge-row">
+        <span className="auth-badge">
+          <ShieldCheck size={16} />
+          Khôi phục phiên local
+        </span>
+        <span className="auth-badge">Route /login</span>
+      </div>
+
       <form className="form-shell" onSubmit={handleSubmit}>
         <div className="field-group">
           <label htmlFor="login-email">Email</label>
-          <input
-            id="login-email"
-            name="email"
-            type="email"
-            value={values.email}
-            placeholder="name@example.com"
-            autoComplete="email"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.email)}
-          />
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <Mail size={18} />
+            </span>
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              value={values.email}
+              placeholder="name@example.com"
+              autoComplete="email"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.email)}
+            />
+          </div>
           {fieldErrors.email ? (
             <p className="field-error">{fieldErrors.email}</p>
           ) : null}
         </div>
 
         <div className="field-group">
-          <label htmlFor="login-password">Password</label>
-          <input
-            id="login-password"
-            name="password"
-            type="password"
-            value={values.password}
-            placeholder="********"
-            autoComplete="current-password"
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.password)}
-          />
+          <label htmlFor="login-password">Mật khẩu</label>
+          <div className="field-input-shell">
+            <span className="field-icon" aria-hidden="true">
+              <LockKeyhole size={18} />
+            </span>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              value={values.password}
+              placeholder="Nhập mật khẩu"
+              autoComplete="current-password"
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.password)}
+            />
+          </div>
           {fieldErrors.password ? (
             <p className="field-error">{fieldErrors.password}</p>
           ) : null}
@@ -128,19 +147,24 @@ function LoginPage() {
 
         <button
           type="submit"
-          className="button button-primary"
+          className="button button-primary auth-submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Signing in...' : 'Sign in'}
+          {isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          <ArrowRight size={18} />
         </button>
       </form>
 
-      <div className="placeholder-actions">
-        <Link className="button button-secondary" to="/register">
-          Need an account?
-        </Link>
+      <div className="auth-form-note">
+        <strong>Vào nhanh đúng chỗ</strong>
+        <p>Sau khi đăng nhập, protected routes sẽ đưa anh trở lại đúng trang vừa mở.</p>
       </div>
-    </PagePlaceholder>
+
+      <div className="auth-switch">
+        <span>Chưa có tài khoản?</span>
+        <Link to="/register">Tạo tài khoản ngay</Link>
+      </div>
+    </section>
   )
 }
 
