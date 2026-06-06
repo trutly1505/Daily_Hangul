@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, LockKeyhole, Mail, ShieldCheck } from 'lucide-react'
+import { ArrowRight, LockKeyhole, Mail } from 'lucide-react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import authService from '../services/authService.js'
@@ -83,19 +83,8 @@ function LoginPage() {
     <section className="auth-form-view">
       <div className="auth-form-head">
         <span className="eyebrow">Authentication</span>
-        <h2>Đăng nhập và tiếp tục bài học đang dở.</h2>
-        <p>
-          Dùng tài khoản hiện có để quay lại flow học được bảo vệ, hàng đợi ôn
-          lại và kết quả quiz gần nhất.
-        </p>
-      </div>
-
-      <div className="auth-badge-row">
-        <span className="auth-badge">
-          <ShieldCheck size={16} />
-          Khôi phục phiên local
-        </span>
-        <span className="auth-badge">Route /login</span>
+        <h2>Đăng nhập</h2>
+        <p>Quay lại dashboard và phiên học đang dở.</p>
       </div>
 
       <form className="form-shell" onSubmit={handleSubmit}>
@@ -154,11 +143,6 @@ function LoginPage() {
           <ArrowRight size={18} />
         </button>
       </form>
-
-      <div className="auth-form-note">
-        <strong>Vào nhanh đúng chỗ</strong>
-        <p>Sau khi đăng nhập, protected routes sẽ đưa anh trở lại đúng trang vừa mở.</p>
-      </div>
 
       <div className="auth-switch">
         <span>Chưa có tài khoản?</span>
