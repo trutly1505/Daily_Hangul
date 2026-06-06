@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, LockKeyhole, Mail, Sparkles, UserRound } from 'lucide-react'
+import { ArrowRight, LockKeyhole, Mail, UserRound } from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import authService from '../services/authService.js'
@@ -87,22 +87,11 @@ function RegisterPage() {
     <section className="auth-form-view">
       <div className="auth-form-head">
         <span className="eyebrow">Authentication</span>
-        <h2>Tạo tài khoản và bắt đầu phiên học đầu tiên.</h2>
-        <p>
-          Đăng ký một lần, sau đó đi thẳng vào dashboard với danh sách chủ đề,
-          flashcard và quiz flow đã sẵn sàng để dùng.
-        </p>
+        <h2>Tạo tài khoản</h2>
+        <p>Bắt đầu học và lưu tiến độ ngay từ phiên đầu tiên.</p>
       </div>
 
-      <div className="auth-badge-row">
-        <span className="auth-badge">
-          <Sparkles size={16} />
-          Thiết lập người học mới
-        </span>
-        <span className="auth-badge">Route /register</span>
-      </div>
-
-      <form className="form-shell" onSubmit={handleSubmit}>
+      <form className="form-shell form-shell--double" onSubmit={handleSubmit}>
         <div className="field-group">
           <label htmlFor="register-name">Họ và tên</label>
           <div className="field-input-shell">
@@ -198,14 +187,6 @@ function RegisterPage() {
           <ArrowRight size={18} />
         </button>
       </form>
-
-      <div className="auth-form-note">
-        <strong>Trước khi tiếp tục</strong>
-        <p>
-          Mật khẩu cần tối thiểu 6 ký tự. Sau khi đăng ký, app sẽ đăng nhập
-          ngay và đưa anh vào protected flow.
-        </p>
-      </div>
 
       <div className="auth-switch">
         <span>Đã có tài khoản?</span>
