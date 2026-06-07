@@ -15,8 +15,14 @@ async function getTopicFlashcards(topicSlug) {
   return response.data.data
 }
 
+async function getTopicQuiz(topicSlug) {
+  const response = await api.get(`/topics/${topicSlug}/quiz`)
+  return response.data.data
+}
+
 export default {
   getTopic,
   getTopicFlashcards,
+  getTopicQuiz,
   getTopics,
 }

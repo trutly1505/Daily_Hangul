@@ -1,5 +1,6 @@
 const asyncHandler = require('../utils/asyncHandler')
 const {
+  getQuizByTopicSlug,
   getTopicBySlug,
   listFlashcardsByTopicSlug,
   listTopics,
@@ -32,8 +33,18 @@ const getTopicFlashcards = asyncHandler(async (req, res) => {
   })
 })
 
+const getTopicQuiz = asyncHandler(async (req, res) => {
+  const topicQuiz = await getQuizByTopicSlug(req.params.topicSlug)
+
+  res.status(200).json({
+    success: true,
+    data: topicQuiz,
+  })
+})
+
 module.exports = {
   getTopic,
   getTopicFlashcards,
+  getTopicQuiz,
   getTopics,
 }
