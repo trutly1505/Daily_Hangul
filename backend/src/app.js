@@ -7,6 +7,7 @@ const {
 } = require('./middlewares/errorMiddleware')
 const authRoutes = require('./routes/authRoutes')
 const healthRoutes = require('./routes/healthRoutes')
+const quizResultRoutes = require('./routes/quizResultRoutes')
 const topicRoutes = require('./routes/topicRoutes')
 
 const app = express()
@@ -53,6 +54,7 @@ app.get('/api', (req, res) => {
 app.use('/api/health', healthRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/topics', topicRoutes)
+app.use('/api/quiz-results', quizResultRoutes)
 
 app.use(notFoundHandler)
 app.use(errorHandler)
