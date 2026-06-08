@@ -10,7 +10,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
 import { useAuth } from '../hooks/useAuth.js'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import topicService from '../services/topicService.js'
+import { getHeadingText, getTopicDisplayTitle } from '../utils/headingContent.js'
 
 const learningSteps = [
   {
@@ -32,6 +34,7 @@ const learningSteps = [
 
 function DashboardPage() {
   const { user } = useAuth()
+  const { uiLanguage } = useUiLanguage()
   const [topics, setTopics] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -117,7 +120,7 @@ function DashboardPage() {
       <section className="dashboard-hero">
         <div className="dashboard-hero__copy">
           <span className="eyebrow">Dashboard</span>
-          <h1>{firstName}, bắt đầu với các topic đã sẵn sàng để học.</h1>
+          <h1>{getHeadingText('dashboardHeroTitle', uiLanguage, { name: firstName })}</h1>
           <p>
             Hai chủ đề đầu tiên đã được nạp vào hệ thống. Từ đây có thể đi thẳng
             vào flashcard hoặc quiz theo từng topic thật thay vì route demo.
@@ -179,7 +182,7 @@ function DashboardPage() {
         <div className="dashboard-section-head">
           <div>
             <span className="eyebrow">Topics</span>
-            <h2>Các chủ đề đang có</h2>
+            <h2>{getHeadingText('dashboardTopicsTitle', uiLanguage)}</h2>
           </div>
         </div>
 
@@ -188,7 +191,7 @@ function DashboardPage() {
             <article className="dashboard-topic-card" key={topic.slug}>
               <div className="dashboard-topic-card__head">
                 <div>
-                  <strong>{topic.title}</strong>
+                  <strong>{getTopicDisplayTitle(topic, uiLanguage)}</strong>
                   <p>{topic.description}</p>
                 </div>
                 <span>{topic.level}</span>

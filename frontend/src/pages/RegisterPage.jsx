@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { ArrowRight, LockKeyhole, Mail, UserRound } from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import authService from '../services/authService.js'
+import { getHeadingText } from '../utils/headingContent.js'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage.js'
 import { validateRegisterForm } from '../utils/validators.js'
 
@@ -15,6 +17,7 @@ const initialValues = {
 
 function RegisterPage() {
   const { isAuthenticated, isHydrated, setSession } = useAuth()
+  const { uiLanguage } = useUiLanguage()
   const navigate = useNavigate()
   const [values, setValues] = useState(initialValues)
   const [fieldErrors, setFieldErrors] = useState({})
@@ -25,7 +28,7 @@ function RegisterPage() {
     return (
       <section className="auth-form-view auth-form-view--loading">
         <span className="eyebrow">Authentication</span>
-        <h2>Đang kiểm tra phiên đã lưu</h2>
+        <h2>{getHeadingText('authLoadingTitle', uiLanguage)}</h2>
         <p>Auth shell đang khôi phục trạng thái local trước khi render form.</p>
       </section>
     )
@@ -87,7 +90,7 @@ function RegisterPage() {
     <section className="auth-form-view">
       <div className="auth-form-head">
         <span className="eyebrow">Authentication</span>
-        <h2>Tạo tài khoản</h2>
+        <h2>{getHeadingText('registerTitle', uiLanguage)}</h2>
         <p>Bắt đầu học và lưu tiến độ ngay từ phiên đầu tiên.</p>
       </div>
 

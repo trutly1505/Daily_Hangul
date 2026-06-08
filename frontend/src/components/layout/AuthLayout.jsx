@@ -1,5 +1,6 @@
 import { BookOpenText, ShieldCheck } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
+import HeadingLanguageToggle from '../common/HeadingLanguageToggle.jsx'
 
 const authHighlights = [
   {
@@ -17,10 +18,13 @@ function AuthLayout() {
     <div className="auth-shell">
       <aside className="auth-shell__aside">
         <div className="auth-shell__intro">
-          <Link className="brand" to="/">
-            Daily <span>Hangul</span>
-          </Link>
-          <span className="eyebrow">Study Access</span>
+          <div className="auth-shell__intro-copy">
+            <Link className="brand" to="/">
+              Daily <span>Hangul</span>
+            </Link>
+            <span className="eyebrow">Study Access</span>
+          </div>
+          <HeadingLanguageToggle className="language-toggle--light" />
         </div>
 
         <div className="auth-shell__media" aria-hidden="true">

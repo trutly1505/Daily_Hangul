@@ -11,6 +11,8 @@ import {
   Target,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
+import { getHeadingText } from '../utils/headingContent.js'
 
 const studyLoop = [
   {
@@ -58,11 +60,13 @@ const reviewPoints = [
 ]
 
 function LandingPage() {
+  const { uiLanguage } = useUiLanguage()
+
   return (
     <div className="landing-page">
       <section className="landing-hero">
         <div className="landing-hero__copy">
-          <h1>Học Hangul mỗi ngày theo một nhịp gọn và rõ.</h1>
+          <h1>{getHeadingText('landingHeroTitle', uiLanguage)}</h1>
           <p>
             Daily Hangul gom bài học theo chủ đề, flashcard, quiz và lịch sử ôn
             tập vào một flow đủ ngắn để duy trì đều mỗi ngày.
@@ -165,7 +169,7 @@ function LandingPage() {
 
       <section className="landing-band" id="learning-loop">
         <div className="landing-section-heading">
-          <h2>Một vòng học ngắn, nhưng đủ để tạo phản xạ.</h2>
+          <h2>{getHeadingText('landingLoopTitle', uiLanguage)}</h2>
           <p>
             Landing page này phản ánh đúng luồng học của app: chọn chủ đề, ôn
             flashcard, làm quiz và quay lại câu sai ngay sau đó.
@@ -192,7 +196,7 @@ function LandingPage() {
       <section className="landing-band landing-band--soft" id="topic-library">
         <div className="landing-showcase">
           <div className="landing-showcase__copy">
-            <h2>Không chỉ học đẹp mắt, mà còn học đúng thứ cần nhớ.</h2>
+            <h2>{getHeadingText('landingShowcaseTitle', uiLanguage)}</h2>
             <p>
               Từ phần mở đầu với bảng chữ cái cho đến các cụm giao tiếp thường
               gặp, mỗi chủ đề đều dẫn thẳng sang flashcard và quiz tương ứng.
@@ -249,7 +253,7 @@ function LandingPage() {
 
       <section className="landing-band" id="review-cycle">
         <div className="landing-section-heading">
-          <h2>Ba lớp nội dung cốt lõi cho một website học tập rõ ràng.</h2>
+          <h2>{getHeadingText('landingCoreTitle', uiLanguage)}</h2>
           <p>
             Bắt đầu từ những phần nhỏ và đúng ngữ cảnh, sau đó mở rộng dần theo
             nhu cầu học thực tế.
@@ -272,7 +276,7 @@ function LandingPage() {
 
       <section className="landing-cta">
         <div className="landing-cta__copy">
-          <h2>Bắt đầu với phiên học đầu tiên thay vì một danh sách dài phải nhớ.</h2>
+          <h2>{getHeadingText('landingCtaTitle', uiLanguage)}</h2>
           <p>
             Tạo tài khoản, vào dashboard và dùng flow flashcard + quiz để kiểm
             tra ngay xem cách học này có hợp với anh không.

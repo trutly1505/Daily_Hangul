@@ -2,10 +2,13 @@ import { ArrowLeft, BookOpenText, Target } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import topicService from '../services/topicService.js'
+import { getTopicDisplayTitle } from '../utils/headingContent.js'
 
 function TopicDetailPage() {
   const navigate = useNavigate()
+  const { uiLanguage } = useUiLanguage()
   const { topicId = 'unknown-topic' } = useParams()
   const [topic, setTopic] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -97,6 +100,8 @@ function TopicDetailPage() {
     )
   }
 
+  const topicTitle = getTopicDisplayTitle(topic, uiLanguage)
+
   return (
     <div className="topic-detail-page">
       <section className="topic-detail-hero">
@@ -108,7 +113,7 @@ function TopicDetailPage() {
         <div className="topic-detail-hero__content topic-detail-hero__content--simple">
           <div className="topic-detail-hero__copy">
             <span className="eyebrow">Topic</span>
-            <h1>{topic.title}</h1>
+            <h1>{topicTitle}</h1>
             <p>{topic.description}</p>
 
             <div className="topic-detail-hero__facts" aria-label="Topic summary">

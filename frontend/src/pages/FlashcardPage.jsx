@@ -9,7 +9,9 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import topicService from '../services/topicService.js'
+import { getHeadingText, getTopicDisplayTitle } from '../utils/headingContent.js'
 import {
   clearFlashcardSession,
   loadFlashcardSession,
@@ -35,6 +37,7 @@ function isEditableTarget(target) {
 
 function FlashcardPage() {
   const navigate = useNavigate()
+  const { uiLanguage } = useUiLanguage()
   const { topicId = 'unknown-topic' } = useParams()
   const [topic, setTopic] = useState(null)
   const [cards, setCards] = useState([])
@@ -139,6 +142,7 @@ function FlashcardPage() {
   const progressLabel = cards.length
     ? `${sessionState.isCompleted ? cards.length : sessionState.currentIndex + 1} / ${cards.length}`
     : '0 / 0'
+  const topicTitle = getTopicDisplayTitle(topic, uiLanguage)
 
   const faceLabel = sessionState.isCompleted
     ? 'Hoàn thành'
@@ -288,7 +292,7 @@ function FlashcardPage() {
         <section className="flashcard-summary">
           <div className="flashcard-summary__content">
             <span className="eyebrow">Session done</span>
-            <h2>Đã học xong bộ thẻ của {topic.title}.</h2>
+            <h2>{getHeadingText('flashcardSummaryTitle', uiLanguage, { topicTitle })}</h2>
             <p>
               Bạn đã đi hết {cards.length} flashcard trong topic này. Có thể học lại
               từ đầu hoặc quay về topic để tiếp tục các bước khác sau đó.
@@ -360,7 +364,7 @@ function FlashcardPage() {
             <div className="flashcard-stage__progress-copy">
               <strong>{progressLabel}</strong>
               <span>
-                {topic.title} · {faceLabel}
+                {topicTitle} · {faceLabel}
               </span>
             </div>
             <div className="flashcard-progress flashcard-progress--compact" aria-hidden="true">
