@@ -2908,13 +2908,18 @@ input {
   }
 
   .site-header__inner {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     grid-template-areas:
-      'brand toggle'
-      'panel panel';
+      'brand utility toggle'
+      'panel panel panel';
     gap: 10px;
     width: min(100% - 24px, 1180px);
     padding: 14px 0;
+  }
+
+  .header-utility {
+    width: auto;
+    justify-content: flex-end;
   }
 
   .header-menu-toggle {
@@ -2946,13 +2951,8 @@ input {
     padding-bottom: 0;
   }
 
-  .header-utility,
   .header-actions {
     width: 100%;
-  }
-
-  .header-utility {
-    justify-content: flex-start;
   }
 
   .site-header .language-toggle,
@@ -2960,6 +2960,10 @@ input {
   .site-header .user-chip,
   .site-header .button {
     width: auto;
+  }
+
+  .site-header .language-toggle {
+    flex-wrap: nowrap;
   }
 
   .main-nav .nav-link {

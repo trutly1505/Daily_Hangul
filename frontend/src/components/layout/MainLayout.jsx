@@ -32,6 +32,10 @@ function MainLayout() {
             Daily <span>Hangul</span>
           </Link>
 
+          <div className="header-utility">
+            <HeadingLanguageToggle />
+          </div>
+
           <button
             type="button"
             className="header-menu-toggle"
@@ -72,10 +76,6 @@ function MainLayout() {
                     </NavLink>
                   ))}
             </nav>
-
-            <div className="header-utility">
-              <HeadingLanguageToggle />
-            </div>
 
             <div className="header-actions">
               {isAuthenticated ? (
