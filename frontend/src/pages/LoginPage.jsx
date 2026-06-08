@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { ArrowRight, LockKeyhole, Mail } from 'lucide-react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import authService from '../services/authService.js'
+import { getHeadingText } from '../utils/headingContent.js'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage.js'
 import { validateLoginForm } from '../utils/validators.js'
 
@@ -13,6 +15,7 @@ const initialValues = {
 
 function LoginPage() {
   const { isAuthenticated, isHydrated, setSession } = useAuth()
+  const { uiLanguage } = useUiLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const [values, setValues] = useState(initialValues)
@@ -26,7 +29,7 @@ function LoginPage() {
     return (
       <section className="auth-form-view auth-form-view--loading">
         <span className="eyebrow">Authentication</span>
-        <h2>Đang kiểm tra phiên đã lưu</h2>
+        <h2>{getHeadingText('authLoadingTitle', uiLanguage)}</h2>
         <p>Auth shell đang khôi phục trạng thái local trước khi render form.</p>
       </section>
     )
@@ -83,7 +86,7 @@ function LoginPage() {
     <section className="auth-form-view">
       <div className="auth-form-head">
         <span className="eyebrow">Authentication</span>
-        <h2>Đăng nhập</h2>
+        <h2>{getHeadingText('loginTitle', uiLanguage)}</h2>
         <p>Quay lại dashboard và phiên học đang dở.</p>
       </div>
 

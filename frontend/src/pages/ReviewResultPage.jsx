@@ -2,10 +2,13 @@ import { ArrowLeft, CheckCircle2, CircleX } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import quizService from '../services/quizService.js'
+import { getHeadingText, getTopicDisplayTitle } from '../utils/headingContent.js'
 
 function ReviewResultPage() {
   const { resultId = 'unknown-result' } = useParams()
+  const { uiLanguage } = useUiLanguage()
   const [result, setResult] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -69,6 +72,8 @@ function ReviewResultPage() {
     )
   }
 
+  const topicTitle = getTopicDisplayTitle(result.topic, uiLanguage)
+
   return (
     <div className="quiz-review-page">
       <section className="quiz-review-page__header">
@@ -79,9 +84,10 @@ function ReviewResultPage() {
 
         <div>
           <span className="eyebrow">Answer review</span>
-          <h1>
-            {result.topic.title}: xem lại {result.totalQuestions} câu đã làm.
-          </h1>
+          <h1>{getHeadingText('reviewTitle', uiLanguage, {
+            topicTitle,
+            totalQuestions: result.totalQuestions,
+          })}</h1>
           <p>
             Mỗi block cho biết câu đã chọn, đáp án đúng và ví dụ gốc của từ để ôn lại
             ngay sau khi làm bài.

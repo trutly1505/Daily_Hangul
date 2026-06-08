@@ -2,7 +2,9 @@ import { Clock3, RefreshCw, Target } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import quizService from '../services/quizService.js'
+import { getHeadingText, getTopicDisplayTitle } from '../utils/headingContent.js'
 
 function formatDate(dateValue) {
   const parsedDate = new Date(dateValue)
@@ -21,6 +23,7 @@ function formatDate(dateValue) {
 }
 
 function HistoryPage() {
+  const { uiLanguage } = useUiLanguage()
   const [history, setHistory] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -98,7 +101,7 @@ function HistoryPage() {
     <div className="history-page">
       <section className="history-page__header">
         <span className="eyebrow">Quiz history</span>
-        <h1>Lịch sử các lượt làm quiz đã lưu.</h1>
+        <h1>{getHeadingText('historyTitle', uiLanguage)}</h1>
         <p>
           Mỗi lượt sẽ ghi lại điểm số, topic, thời gian làm bài và đường dẫn sang
           phần review chi tiết.
@@ -110,7 +113,7 @@ function HistoryPage() {
           <article className="history-card" key={item.id}>
             <div className="history-card__head">
               <div>
-                <span>{item.topic.title}</span>
+                <span>{getTopicDisplayTitle(item.topic, uiLanguage)}</span>
                 <strong>{item.scoreLabel}</strong>
               </div>
               <div className="history-card__score">{item.scorePercent}%</div>

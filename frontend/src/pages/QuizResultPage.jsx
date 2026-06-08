@@ -2,10 +2,13 @@ import { CheckCircle2, RefreshCw, Target } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import PagePlaceholder from '../components/common/PagePlaceholder.jsx'
+import { useUiLanguage } from '../hooks/useUiLanguage.js'
 import quizService from '../services/quizService.js'
+import { getHeadingText, getTopicDisplayTitle } from '../utils/headingContent.js'
 
 function QuizResultPage() {
   const { resultId = 'unknown-result' } = useParams()
+  const { uiLanguage } = useUiLanguage()
   const [result, setResult] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -69,13 +72,13 @@ function QuizResultPage() {
     )
   }
 
+  const topicTitle = getTopicDisplayTitle(result.topic, uiLanguage)
+
   return (
     <section className="quiz-summary">
       <div className="quiz-summary__hero">
         <span className="eyebrow">Quiz saved</span>
-        <h2>
-          {result.topic.title}: {result.scoreLabel} câu đúng.
-        </h2>
+        <h2>{getHeadingText('quizResultTitle', uiLanguage, { topicTitle, scoreLabel: result.scoreLabel })}</h2>
         <p>
           Kết quả này đã được lưu lại trong lịch sử. Anh có thể xem lại các câu sai
           hoặc làm lại quiz của topic này bất kỳ lúc nào.
